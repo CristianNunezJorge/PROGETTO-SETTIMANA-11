@@ -1,0 +1,18 @@
+.sidebar {
+  background-color: #000000;
+  padding-bottom: 1rem;
+}
+
+.player {
+  background-color: #282828;
+  height: 80px;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding-bottom: 80px;
+  }
+}
