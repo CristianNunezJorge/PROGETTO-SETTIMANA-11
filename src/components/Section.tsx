@@ -7,14 +7,15 @@ import { fetchSongs } from "../fetchSongs";
 import SongCard from "./SongCard";
 
 interface SectionProps {
-  title: string; 
+  title: string;
   storeKey: string;
-  query: string;
+  query?: string;
+  limit?: number;
 }
 
 const noSongsYet: Track[] = [];
 
-function Section({ title, storeKey, query }: SectionProps) {
+function Section({ title, storeKey, query, limit }: SectionProps) {
   const dispatch = useAppDispatch();
 
   const songs = useAppSelector(
@@ -22,6 +23,9 @@ function Section({ title, storeKey, query }: SectionProps) {
   );
 
   useEffect(() => {
+    if (!query) {
+      return;
+    }
     fetchSongs(query)
       .then((tracks) => dispatch(saveSongs(storeKey, tracks)))
       .catch((error) => console.error("Errore nella sezione " + title, error));
@@ -33,7 +37,7 @@ function Section({ title, storeKey, query }: SectionProps) {
         {title}
       </h2>
       <Row>
-        {songs.slice(0, 4).map((track) => (
+        {songs.slice(0, limit).map((track) => (
           <SongCard key={track.id} track={track} />
         ))}
       </Row>

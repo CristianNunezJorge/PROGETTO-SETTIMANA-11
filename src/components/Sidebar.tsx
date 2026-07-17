@@ -1,6 +1,13 @@
+import { useState } from "react";
 import { Button, Col, Form } from "react-bootstrap";
+import { useAppDispatch } from "../redux/hooks";
+import { saveSongs, SEARCH_KEY } from "../redux/actions";
+import { fetchSongs } from "../fetchSongs";
 
 function Sidebar() {
+  const [searchText, setSearchText] = useState("");
+  const dispatch = useAppDispatch();
+
   return (
     <Col xs={12} md={3} lg={2} className="sidebar pt-3 d-flex flex-column">
       <h1 className="fs-4">🎵 EpiMusic</h1>
@@ -14,8 +21,25 @@ function Sidebar() {
         </a>
       </nav>
 
-      <Form className="d-flex gap-2 mt-3">
-        <Form.Control type="search" placeholder="Cerca..." size="sm" />
+      <Form
+        className="d-flex gap-2 mt-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (searchText.trim() === "") {
+            return;
+          }
+          fetchSongs(searchText)
+            .then((tracks) => dispatch(saveSongs(SEARCH_KEY, tracks)))
+            .catch((error) => console.error("Errore nella ricerca", error));
+        }}
+      >
+        <Form.Control
+          type="search"
+          placeholder="Cerca..."
+          size="sm"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
         <Button variant="outline-light" size="sm" type="submit">
           Vai
         </Button>

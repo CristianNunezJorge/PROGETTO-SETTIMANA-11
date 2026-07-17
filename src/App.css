@@ -3,6 +3,10 @@
   padding-bottom: 1rem;
 }
 
+.song-card {
+  cursor: pointer;
+}
+
 .player {
   background-color: #282828;
   height: 80px;

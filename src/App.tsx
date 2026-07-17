@@ -2,9 +2,15 @@ import { Col, Container, Row } from "react-bootstrap";
 import Sidebar from "./components/Sidebar";
 import Player from "./components/Player";
 import Section from "./components/Section";
+import { SEARCH_KEY } from "./redux/actions";
+import { useAppSelector } from "./redux/hooks";
 import "./App.css";
 
 function App() {
+  const hasSearched = useAppSelector(
+    (state) => state.songs[SEARCH_KEY] !== undefined
+  );
+
   return (
     <>
       <Container fluid>
@@ -22,9 +28,19 @@ function App() {
                 Hip Hop
               </a>
             </nav>
-            <Section title="Rock" storeKey="rock" query="queen" />
-            <Section title="Pop" storeKey="pop" query="katyperry" />
-            <Section title="Hip Hop" storeKey="hiphop" query="eminem" />
+
+            {hasSearched && (
+              <Section title="Search Results" storeKey={SEARCH_KEY} />
+            )}
+
+            <Section title="Rock" storeKey="rock" query="queen" limit={4} />
+            <Section title="Pop" storeKey="pop" query="katyperry" limit={4} />
+            <Section
+              title="Hip Hop"
+              storeKey="hiphop"
+              query="eminem"
+              limit={4}
+            />
           </Col>
         </Row>
       </Container>

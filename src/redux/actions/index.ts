@@ -9,6 +9,8 @@ export const SAVE_SONGS = "SAVE_SONGS";
 export const SET_CURRENT_TRACK = "SET_CURRENT_TRACK";
 export const TOGGLE_LIKE = "TOGGLE_LIKE";
 
+export const SEARCH_KEY = "search";
+
 // ============================================
 // 2) Un'interfaccia per ogni azione.
 //    "type" è una stringa LETTERALE (typeof costante):

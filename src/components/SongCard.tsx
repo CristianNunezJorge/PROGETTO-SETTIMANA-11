@@ -1,14 +1,22 @@
-import { Card, Col } from "react-bootstrap";
+import { Button, Card, Col } from "react-bootstrap";
 import type { Track } from "../types/Track";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { setCurrentTrack, toggleLike } from "../redux/actions";
 
 interface SongCardProps {
   track: Track;
 }
 
 function SongCard({ track }: SongCardProps) {
+  const dispatch = useAppDispatch();
+  const isLiked = useAppSelector((state) => state.likes.includes(track.id));
+
   return (
     <Col xs={6} md={4} lg={3} className="mb-3">
-      <Card>
+      <Card
+        className="song-card"
+        onClick={() => dispatch(setCurrentTrack(track))}
+      >
         <Card.Img
           variant="top"
           src={track.album.cover_medium}
@@ -19,7 +27,22 @@ function SongCard({ track }: SongCardProps) {
           <Card.Text className="text-secondary mb-1 text-truncate">
             {track.artist.name}
           </Card.Text>
-          <span className="fs-5">♡</span>
+          <Button
+            variant="link"
+            className={
+              "p-0 fs-5 text-decoration-none " +
+              (isLiked ? "text-danger" : "text-white")
+            }
+            aria-label={
+              isLiked ? "Togli dai preferiti" : "Aggiungi ai preferiti"
+            }
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(toggleLike(track.id));
+            }}
+          >
+            {isLiked ? "♥" : "♡"}
+          </Button>
         </Card.Body>
       </Card>
     </Col>
